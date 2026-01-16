@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "./ui/button"
-import { CalendarIcon, HomeIcon, LogInIcon, LogOutIcon, Shield } from "lucide-react"
+import { CalendarIcon, HomeIcon, LogInIcon, LogOutIcon } from "lucide-react"
 import { SheetClose, SheetContent, SheetHeader, SheetTitle } from "./ui/sheet"
 import { quickSearchOptions } from "../_constants/search"
 import Link from "next/link"
@@ -14,10 +14,6 @@ import SignInDialog from "./sign-in-dialog"
 const SidebarSheet = () => {
   const { data } = useSession()
   const handleLogoutClick = () => signOut()
-  
-  // Verifica se o usuário é admin ou owner
-  const userRole = (data?.user as any)?.role
-  const isAdmin = userRole === "ADMIN" || userRole === "OWNER"
 
   return (
     <SheetContent className="overflow-y-auto">
@@ -63,24 +59,12 @@ const SidebarSheet = () => {
             </Link>
           </Button>
         </SheetClose>
-        <SheetClose asChild>
-          <Button className="justify-start gap-2" variant="ghost" asChild>
-            <Link href="/bookings">
-              <CalendarIcon size={18} />
-              Agendamentos
-            </Link>
-          </Button>
-        </SheetClose>
-        {isAdmin && (
-          <SheetClose asChild>
-            <Button className="justify-start gap-2" variant="ghost" asChild>
-              <Link href="/admin/dashboard">
-                <Shield size={18} />
-                Painel Admin
-              </Link>
-            </Button>
-          </SheetClose>
-        )}
+        <Button className="justify-start gap-2" variant="ghost" asChild>
+          <Link href="/bookings">
+            <CalendarIcon size={18} />
+            Agendamentos
+          </Link>
+        </Button>
       </div>
 
       <div className="flex flex-col gap-2 border-b border-solid py-5">

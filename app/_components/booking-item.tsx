@@ -6,7 +6,6 @@ import { Badge } from "./ui/badge"
 import { Card, CardContent } from "./ui/card"
 import { format, isFuture } from "date-fns"
 import { ptBR } from "date-fns/locale"
-import { BookingStatus } from "@prisma/client"
 import {
   Sheet,
   SheetClose,
@@ -52,9 +51,7 @@ const BookingItem = ({ booking }: BookingItemProps) => {
   const {
     service: { barbershop },
   } = booking
-  const isConfirmed = booking.status === BookingStatus.CONFIRMADO
-  const isConcluded = booking.status === BookingStatus.CONCLUIDO
-  const isCanceled = booking.status === BookingStatus.CANCELADO
+  const isConfirmed = isFuture(booking.date)
   const handleCancelBooking = async () => {
     try {
       await deleteBooking(booking.id)
@@ -77,21 +74,9 @@ const BookingItem = ({ booking }: BookingItemProps) => {
             <div className="flex flex-col gap-2 py-5 pl-5">
               <Badge
                 className="w-fit"
-                variant={
-                  isCanceled
-                    ? "destructive"
-                    : isConfirmed
-                    ? "default"
-                    : "secondary"
-                }
+                variant={isConfirmed ? "default" : "secondary"}
               >
-                {isCanceled
-                  ? "Cancelado"
-                  : isConfirmed
-                  ? "Confirmado"
-                  : isConcluded
-                  ? "Concluído"
-                  : "Finalizado"}
+                {isConfirmed ? "Confirmado" : "Finalizado"}
               </Badge>
               <h3 className="font-semibold">{booking.service.name}</h3>
 
@@ -146,21 +131,9 @@ const BookingItem = ({ booking }: BookingItemProps) => {
         <div className="mt-6">
           <Badge
             className="w-fit"
-            variant={
-              isCanceled
-                ? "destructive"
-                : isConfirmed
-                ? "default"
-                : "secondary"
-            }
+            variant={isConfirmed ? "default" : "secondary"}
           >
-            {isCanceled
-              ? "Cancelado"
-              : isConfirmed
-              ? "Confirmado"
-              : isConcluded
-              ? "Concluído"
-              : "Finalizado"}
+            {isConfirmed ? "Confirmado" : "Finalizado"}
           </Badge>
 
           <div className="mb-3 mt-6">
@@ -184,7 +157,7 @@ const BookingItem = ({ booking }: BookingItemProps) => {
                 Voltar
               </Button>
             </SheetClose>
-            {isConfirmed && !isCanceled && (
+            {isConfirmed && (
               <Dialog>
                 <DialogTrigger className="w-full">
                   <Button variant="destructive" className="w-full">

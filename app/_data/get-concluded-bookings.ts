@@ -3,7 +3,6 @@
 import { getServerSession } from "next-auth"
 import { db } from "../_lib/prisma"
 import { authOptions } from "../_lib/auth"
-import { BookingStatus } from "@prisma/client"
 
 export const getConcludedBookings = async () => {
   const session = await getServerSession(authOptions)
@@ -11,7 +10,9 @@ export const getConcludedBookings = async () => {
   return db.booking.findMany({
     where: {
       userId: (session.user as any).id,
-      status: BookingStatus.CONCLUIDO,
+      date: {
+        lt: new Date(),
+      },
     },
     include: {
       service: {
@@ -21,7 +22,7 @@ export const getConcludedBookings = async () => {
       },
     },
     orderBy: {
-      date: "desc",
+      date: "asc",
     },
   })
 }
