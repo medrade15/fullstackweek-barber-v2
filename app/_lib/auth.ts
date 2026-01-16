@@ -14,9 +14,14 @@ export const authOptions: AuthOptions = {
   ],
   callbacks: {
     async session({ session, user }) {
+      const dbUser = await db.user.findUnique({
+        where: { id: user.id },
+        select: { id: true, role: true },
+      })
       session.user = {
         ...session.user,
         id: user.id,
+        role: dbUser?.role || "USER",
       } as any
       return session
     },
