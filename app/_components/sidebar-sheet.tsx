@@ -6,8 +6,8 @@ import { SheetClose, SheetContent, SheetHeader, SheetTitle } from "./ui/sheet"
 import { quickSearchOptions } from "../_constants/search"
 import Link from "next/link"
 import Image from "next/image"
-import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog"
 import { signOut, useSession } from "next-auth/react"
+import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog"
 import { Avatar, AvatarImage } from "./ui/avatar"
 import SignInDialog from "./sign-in-dialog"
 
@@ -66,24 +66,22 @@ const SidebarSheet = () => {
           </Link>
         </Button>
       </div>
-
-      <div className="flex flex-col gap-2 border-b border-solid py-5">
-        {quickSearchOptions.map((option) => (
-          <SheetClose key={option.title} asChild>
+      
+      {/* Admin link - visible only to ADMIN users */}
+      {(data?.user as any)?.role === "ADMIN" && (
+        <div className="flex flex-col gap-2 border-b border-solid py-5">
+          <SheetClose asChild>
             <Button className="justify-start gap-2" variant="ghost" asChild>
-              <Link href={`/barbershops?service=${option.title}`}>
-                <Image
-                  alt={option.title}
-                  src={option.imageUrl}
-                  height={18}
-                  width={18}
-                />
-                {option.title}
+              <Link href="/admin/bookings">
+                <CalendarIcon size={18} />
+                Painel Admin
               </Link>
             </Button>
           </SheetClose>
-        ))}
-      </div>
+        </div>
+      )}
+
+      {/* Quick search options removed — only a single barbershop is available */}
 
       {data?.user && (
         <div className="flex flex-col gap-2 py-5">

@@ -8,16 +8,31 @@ import { authOptions } from "../_lib/auth"
 interface CreateBookingParams {
   serviceId: string
   date: Date
+  phone?: string
 }
 
 export const createBooking = async (params: CreateBookingParams) => {
-  const user = await getServerSession(authOptions)
-  if (!user) {
+  const session = await getServerSession(authOptions)
+  if (!session || !(session.user as any)?.id) {
     throw new Error("Usuário não autenticado")
   }
-  await db.booking.create({
-    data: { ...params, userId: (user.user as any).id },
+  const userId = (session.user as any).id
+
+  const booking = await db.booking.create({
+    data: { serviceId: params.serviceId, date: params.date, userId, phone: params.phone ?? null },
+    include: { user: true, service: true },
   })
-  revalidatePath("/barbershops/[id]")
-  revalidatePath("/bookings")
+  try {
+    const { publish } = await import("../lib/sse")
+    publish("booking:created", booking)
+  } catch (e) {
+    // ignore
+  }
+  try {
+    revalidatePath("/barbershops/[id]")
+    revalidatePath("/bookings")
+    revalidatePath("/admin/bookings")
+  } catch (e) {
+    // ignore
+  }
 }

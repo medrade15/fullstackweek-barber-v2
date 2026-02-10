@@ -14,13 +14,15 @@ import {
 import { Calendar } from "./ui/calendar"
 import { ptBR } from "date-fns/locale"
 import { useEffect, useMemo, useState } from "react"
+import { Dialog, DialogContent } from "./ui/dialog"
+import SignInDialog from "./sign-in-dialog"
+import { signIn } from "next-auth/react"
 import { isPast, isToday, set } from "date-fns"
 import { createBooking } from "../_actions/create-booking"
 import { useSession } from "next-auth/react"
 import { toast } from "sonner"
 import { getBookings } from "../_actions/get-bookings"
-import { Dialog, DialogContent } from "./ui/dialog"
-import SignInDialog from "./sign-in-dialog"
+// dialog/sign-in removed: booking now asks phone only when needed
 import BookingSummary from "./booking-summary"
 import { useRouter } from "next/navigation"
 
@@ -84,13 +86,13 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
   const { data } = useSession()
   const router = useRouter()
   const [signInDialogIsOpen, setSignInDialogIsOpen] = useState(false)
+  const [phoneInput, setPhoneInput] = useState("")
   const [selectedDay, setSelectedDay] = useState<Date | undefined>(undefined)
   const [selectedTime, setSelectedTime] = useState<string | undefined>(
     undefined,
   )
   const [dayBookings, setDayBookings] = useState<Booking[]>([])
   const [bookingSheetIsOpen, setBookingSheetIsOpen] = useState(false)
-
   useEffect(() => {
     const fetch = async () => {
       if (!selectedDay) return
@@ -115,7 +117,8 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
     if (data?.user) {
       return setBookingSheetIsOpen(true)
     }
-    return setSignInDialogIsOpen(true)
+    // open the same sign-in dialog used in the sidebar
+    setSignInDialogIsOpen(true)
   }
 
   const handleBookingSheetOpenChange = () => {
@@ -136,10 +139,18 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
   const handleCreateBooking = async () => {
     try {
       if (!selectedDate) return
-      await createBooking({
+      if (!data?.user) {
+        toast.error("Faça login com sua conta Google antes de reservar.")
+        return
+      }
+      const payload: any = {
         serviceId: service.id,
         date: selectedDate,
-      })
+      }
+      if (data?.user && phoneInput) {
+        payload.phone = phoneInput
+      }
+      await createBooking(payload)
       handleBookingSheetOpenChange()
       toast.success("Reserva criada com sucesso!", {
         action: {
@@ -267,6 +278,17 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
                         service={service}
                         selectedDate={selectedDate}
                       />
+                      {data?.user && (
+                        <div className="mt-4">
+                          <label className="block text-sm mb-2">Telefone (visível apenas ao admin)</label>
+                          <input
+                            className="w-full p-2 border rounded"
+                            value={phoneInput}
+                            onChange={(e) => setPhoneInput(e.target.value)}
+                            placeholder="+55 (11) 9 9999-9999"
+                          />
+                        </div>
+                      )}
                     </div>
                   )}
                   <SheetFooter className="mt-5 px-5">
@@ -284,6 +306,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
         </CardContent>
       </Card>
 
+      {/* If user not signed in, show the shared SignIn dialog */}
       <Dialog
         open={signInDialogIsOpen}
         onOpenChange={(open) => setSignInDialogIsOpen(open)}

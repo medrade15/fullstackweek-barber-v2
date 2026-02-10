@@ -38,7 +38,7 @@ async function seedDatabase() {
       "Barbearia Elegance",
       "Aparência Impecável",
       "Estilo Urbano",
-      "Estilo Mb digital",
+      "mb digital barber",
     ];
 
     // Endereços fictícios para as barbearias
@@ -145,3 +145,22 @@ async function seedDatabase() {
 }
 
 seedDatabase();
+
+// create admin user if not exists
+async function ensureAdmin() {
+  try {
+    await prisma.user.upsert({
+      where: { email: "admin@mbdigital.com" },
+      update: { role: "ADMIN" },
+      create: {
+        name: "Admin",
+        email: "admin@mbdigital.com",
+        role: "ADMIN",
+      },
+    });
+  } catch (e) {
+    console.error("Erro ao criar admin:", e);
+  }
+}
+
+ensureAdmin();

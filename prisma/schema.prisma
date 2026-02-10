@@ -7,12 +7,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  USER
+  ADMIN
+  OWNER
+}
+
+enum BookingStatus {
+  CONFIRMADO
+  CONCLUIDO
+  CANCELADO
+}
+
 model User {
   id            String    @id @default(cuid())
   name          String?
   email         String    @unique
   emailVerified DateTime?
   image         String?
+  role          Role      @default(USER)
+  hashedPassword String?
   accounts      Account[]
   sessions      Session[]
   bookings      Booking[]
@@ -88,7 +102,23 @@ model Booking {
   user      User              @relation(fields: [userId], references: [id])
   serviceId String
   service   BarbershopService @relation(fields: [serviceId], references: [id])
+  phone     String?
   date      DateTime
+  status    BookingStatus     @default(CONFIRMADO)
+  notes     String?
+  updatedBy String?
   createdAt DateTime          @default(now())
   updatedAt DateTime          @updatedAt
+  histories BookingHistory[]
+}
+
+model BookingHistory {
+  id             String   @id @default(uuid())
+  bookingId      String
+  booking        Booking  @relation(fields: [bookingId], references: [id])
+  previousStatus String?
+  newStatus      String
+  byUserId       String?
+  notes          String?
+  createdAt      DateTime @default(now())
 }

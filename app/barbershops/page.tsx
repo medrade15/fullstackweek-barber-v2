@@ -11,7 +11,8 @@ interface BarbershopsPageProps {
 }
 
 const BarbershopsPage = async ({ searchParams }: BarbershopsPageProps) => {
-  const barbershops = await db.barbershop.findMany({
+  // Fetch only a single barbershop (apply same filters if provided)
+  const barbershop = await db.barbershop.findFirst({
     where: {
       OR: [
         searchParams?.title
@@ -50,9 +51,11 @@ const BarbershopsPage = async ({ searchParams }: BarbershopsPageProps) => {
           &quot;
         </h2>
         <div className="grid grid-cols-2 gap-4">
-          {barbershops.map((barbershop) => (
+          {barbershop ? (
             <BarbershopItem key={barbershop.id} barbershop={barbershop} />
-          ))}
+          ) : (
+            <p className="text-sm text-gray-500">Nenhum resultado.</p>
+          )}
         </div>
       </div>
     </div>

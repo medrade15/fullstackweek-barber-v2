@@ -4,33 +4,34 @@
 
 @layer base {
   .dark {
-    --background: 225 9% 9%;
-    --foreground: 210 40% 98%;
+    /* Dark theme: professional charcoal + gold accent */
+    --background: 218 12% 8%;
+    --foreground: 210 20% 96%;
 
-    --card: 228 9% 11%;
-    --card-foreground: 210 40% 98%;
+    --card: 218 12% 12%;
+    --card-foreground: 210 20% 96%;
 
-    --popover: 228 9% 11%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 218 12% 12%;
+    --popover-foreground: 210 20% 96%;
 
-    --primary: 252 100% 69%;
+    --primary: 45 90% 45%; /* gold */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 228 6% 16%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 220 8% 22%;
+    --secondary-foreground: 210 20% 96%;
 
-    --muted: 228 6% 16%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 220 8% 22%;
+    --muted-foreground: 210 15% 70%;
 
-    --accent: 228 6% 16%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 45 90% 45%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 210 20% 96%;
 
-    --border: 228 6% 16%;
-    --input: 228 6% 16%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 220 8% 18%;
+    --input: 220 8% 18%;
+    --ring: 45 90% 50%;
 
     --radius: 0.5rem;
   }
@@ -43,7 +44,27 @@
   html {
     @apply h-full;
   }
+  /* Import professional heading + body fonts */
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;600&display=swap');
+
+  :root {
+    --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+      Roboto, "Helvetica Neue", Arial;
+    --font-heading: 'Playfair Display', ui-serif, Georgia, "Times New Roman",
+      Times, serif;
+  }
+
   body {
     @apply h-full bg-background text-foreground;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  .heading {
+    font-family: var(--font-heading);
   }
 }

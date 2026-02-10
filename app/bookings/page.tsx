@@ -5,6 +5,12 @@ import { notFound } from "next/navigation"
 import BookingItem from "../_components/booking-item"
 import { getConfirmedBookings } from "../_data/get-confirmed-bookings"
 import { getConcludedBookings } from "../_data/get-concluded-bookings"
+import dynamic from "next/dynamic"
+
+const ClientSubscriber = dynamic(
+  () => import("../admin/bookings/admin-subscriber.client"),
+  { ssr: false },
+)
 
 const Bookings = async () => {
   const session = await getServerSession(authOptions)
@@ -18,6 +24,7 @@ const Bookings = async () => {
   return (
     <>
       <Header />
+      <ClientSubscriber />
       <div className="space-y-3 p-5">
         <h1 className="text-xl font-bold">Agendamentos</h1>
         {confirmedBookings.length === 0 && concludedBookings.length === 0 && (
