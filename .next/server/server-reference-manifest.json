@@ -1,0 +1,38 @@
+{
+  "node": {
+    "35192dcf6c0aa5dc5c7f87986bf742d18af765ff": {
+      "workers": {
+        "app/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2Fhome%2Ffernando-santos%2FSecret%C3%A1ria%2Fclone-barber-v2%2Fapp%2F_data%2Fget-confirmed-bookings.ts%22%2C%5B%22%24%24ACTION_0%22%2C%22getConfirmedBookings%22%5D%5D%5D&__client_imported__=!"
+      },
+      "layer": {
+        "app/page": "rsc"
+      }
+    },
+    "47ecdf2c567dbdd2eef5babe0b03df041f5b68da": {
+      "workers": {
+        "app/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2Fhome%2Ffernando-santos%2FSecret%C3%A1ria%2Fclone-barber-v2%2Fapp%2F_data%2Fget-confirmed-bookings.ts%22%2C%5B%22%24%24ACTION_0%22%2C%22getConfirmedBookings%22%5D%5D%5D&__client_imported__=!"
+      },
+      "layer": {
+        "app/page": "rsc"
+      }
+    },
+    "81b2b1d0e3eb88e7b5bc2c1e0ac840076a02eee3": {
+      "workers": {
+        "app/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2Fhome%2Ffernando-santos%2FSecret%C3%A1ria%2Fclone-barber-v2%2Fapp%2F_actions%2Fdelete-booking.ts%22%2C%5B%22deleteBooking%22%2C%22%24%24ACTION_0%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/page": "action-browser"
+      }
+    },
+    "df43054b8580dea33ad069a00ed09512a423d109": {
+      "workers": {
+        "app/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2Fhome%2Ffernando-santos%2FSecret%C3%A1ria%2Fclone-barber-v2%2Fapp%2F_actions%2Fdelete-booking.ts%22%2C%5B%22deleteBooking%22%2C%22%24%24ACTION_0%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/page": "action-browser"
+      }
+    }
+  },
+  "edge": {},
+  "encryptionKey": "n7kHBLv1n7Gfg3hVHPxvUfTgSYJu+Hys1Moyq46knqE="
+}
