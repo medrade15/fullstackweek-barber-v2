@@ -2,3 +2,6 @@ node_modules/
 .pnpm/
 .env
 .DS_Store
+
+# ignore nested repo
+clone-barber-v2.
