@@ -1,4 +1,4 @@
-// File: /home/fernando-santos/Secretária/clone-barber-v2/app/api/auth/[...nextauth]/route.ts
+// File: /home/fernando-santos/Secretária/clone-barber-v43/app/api/auth/[...nextauth]/route.ts
 import * as entry from '../../../../../../app/api/auth/[...nextauth]/route.js'
 import type { NextRequest } from 'next/server.js'
 
